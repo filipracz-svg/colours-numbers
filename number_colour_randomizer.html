@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number & Colour Randomizer</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #f4f7fb, #e9eef7);
+    color: #172033;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+  }
+  .app {
+    width: min(1100px, 100%);
+    background: white;
+    border-radius: 28px;
+    box-shadow: 0 18px 55px rgba(30,45,75,.15);
+    padding: 34px;
+  }
+  h1 {
+    text-align: center;
+    margin: 0 0 8px;
+    font-size: clamp(30px, 5vw, 48px);
+  }
+  .subtitle {
+    text-align: center;
+    color: #667085;
+    margin: 0 0 30px;
+    font-size: 18px;
+  }
+  .panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .panel {
+    border-radius: 22px;
+    padding: 28px;
+    text-align: center;
+    background: #f7f9fc;
+    border: 2px solid #e7ebf2;
+  }
+  .panel h2 { margin: 0 0 18px; font-size: 25px; }
+  .display {
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: white;
+    border: 3px dashed #d5dce8;
+    margin-bottom: 20px;
+    font-size: 88px;
+    font-weight: 800;
+    user-select: none;
+  }
+  #colorDisplay {
+    font-size: 48px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  button {
+    border: 0;
+    border-radius: 14px;
+    padding: 15px 28px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .12s, filter .12s;
+    background: #172033;
+    color: white;
+  }
+  button:hover { filter: brightness(1.12); transform: translateY(-2px); }
+  button:active { transform: translateY(0); }
+  .result {
+    margin-top: 28px;
+    border-radius: 22px;
+    padding: 25px;
+    text-align: center;
+    background: #172033;
+    color: white;
+  }
+  .result h2 { margin: 0 0 8px; font-size: 20px; }
+  .phrase {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    min-height: 62px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hint {
+    margin-top: 12px;
+    color: #cbd5e1;
+    font-size: 15px;
+  }
+  .colors-note {
+    margin-top: 20px;
+    text-align: center;
+    color: #667085;
+    font-size: 14px;
+  }
+  @media (max-width: 720px) {
+    .panels { grid-template-columns: 1fr; }
+    .app { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>🎲 Number & Colour</h1>
+  <p class="subtitle">Losuj číslo a barvu → přelož dvojici do angličtiny.</p>
+
+  <div class="panels">
+    <section class="panel">
+      <h2>🔢 NUMBER</h2>
+      <div class="display" id="numberDisplay">?</div>
+      <button onclick="drawNumber()">LOSOVAT ČÍSLO</button>
+    </section>
+
+    <section class="panel">
+      <h2>🎨 COLOUR</h2>
+      <div class="display" id="colorDisplay">?</div>
+      <button onclick="drawColor()">LOSOVAT BARVU</button>
+    </section>
+  </div>
+
+  <div class="result">
+    <h2>YOUR TASK</h2>
+    <div class="phrase" id="phrase">?</div>
+    <div class="hint">Např. 47 + červená → <strong>forty-seven red</strong></div>
+  </div>
+
+  <div class="colors-note">
+    Barvy: červená · modrá · zelená · žlutá · oranžová · fialová · růžová · hnědá · černá · bílá · šedá · tyrkysová
+  </div>
+</div>
+
+<script>
+const colours = [
+  ["červená", "#ef4444"],
+  ["modrá", "#3b82f6"],
+  ["zelená", "#22c55e"],
+  ["žlutá", "#facc15"],
+  ["oranžová", "#f97316"],
+  ["fialová", "#a855f7"],
+  ["růžová", "#ec4899"],
+  ["hnědá", "#92400e"],
+  ["černá", "#111827"],
+  ["bílá", "#ffffff"],
+  ["šedá", "#6b7280"],
+  ["tyrkysová", "#14b8a6"]
+];
+
+let number = null;
+let colour = null;
+
+function drawNumber() {
+  number = Math.floor(Math.random() * 100) + 1;
+  document.getElementById("numberDisplay").textContent = number;
+  updatePhrase();
+}
+
+function drawColor() {
+  const item = colours[Math.floor(Math.random() * colours.length)];
+  colour = item[0];
+  const display = document.getElementById("colorDisplay");
+  display.textContent = colour;
+  display.style.color = item[0] === "bílá" ? "#172033" : item[1];
+  display.style.background = item[0] === "bílá" ? "#fff" : item[1] + "18";
+  updatePhrase();
+}
+
+function updatePhrase() {
+  if (number !== null && colour !== null) {
+    document.getElementById("phrase").textContent = number + " + " + colour;
+  }
+}
+</script>
+</body>
+</html>
